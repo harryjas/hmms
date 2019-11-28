@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block title %}All Items{% endblock %}
+{% block items_active %}active{% endblock %}
+
+{% block body %}
+<div class="container-fluid songs-container">
+
+    <div class="row">
+        <div class="col-sm-12">
+            <ul class="nav nav-pills" style="margin-bottom: 10px;">
+                <li role="presentation" {% if filter_by == 'all' %}class="active"{% endif %}><a href="{% url 'management:items' 'all' %}">View All</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="row">
+
+        <div class="col-sm-12">
+
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Price</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in item_list %}
+                                <tr>
+                                    <td>{{ item.item_name }}</td>
+                                    <td>{{ item.meal }}</td>
+                                    <td>
+                                        <a href="{% url 'management:detail' item.meal.id %}"></a>
+                                        <a href="{% url 'management:detail' item.meal.id %}">{{ item.meal.meal }}</a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}

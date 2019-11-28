@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% block title %}{{ meal }}{% endblock %}
+{% block meals_active %}active{% endblock %}
+
+{% block body %}
+<div class="container-fluid items-container">
+
+    <div class="row">
+
+        <!-- Left Meal Info -->
+        <div class="col-sm-4 col-md-3">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <h1>{{ meal.meal }}</h1>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Item Info -->
+        <div class="col-sm-8 col-md-9">
+
+            <ul class="nav nav-pills" style="margin-bottom: 10px;">
+                <li role="presentation" class="active"><a href="{% url 'management:detail' meal.id %}">View All</a></li>
+                <li role="presentation"><a href="{% url 'management:create_item' meal.id %}">Add New Item</a></li>
+            </ul>
+
+            <div class="panel panel-default">
+                <div class="panel-body">
+
+                    <h3>All Items</h3>
+
+                    {% if error_message %}
+                        <p><strong>{{ error_message }}</strong></p>
+                    {% endif %}
+
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Price</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for item in meal.item_set.all %}
+                            <tr>
+                                <td>{{ item.item_name }}</td>
+                                <td>{{ item.item_price }}</td>
+                                <td>
+                                    <form action="{% url 'management:delete_item' meal.id item.id %}" method="post" style="display: inline;">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="item_id" value="{{ item.id }}" />
+                                        <button type="submit" class="btn btn-danger btn-xs">
+                                            <span class="glyphicon glyphicon-remove"></span>&nbsp; Delete
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
